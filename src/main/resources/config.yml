@@ -1,0 +1,70 @@
+#################################################################################
+##                   _                        _  _____ __  __                  ##
+##_________________ | |     ___ __      __ __| ||  ___|\ \/ / _________________##
+##_________________ | |    / _ \\ \ /\ / // _` || |_    \  /  _________________##
+##_________________ | |___| (_) |\ V  V /| (_| ||  _|   /  \  _________________##
+##_________________ |_____|\___/  \_/\_/  \__,_||_|    /_/\_\ _________________##
+##                                Configuration                                ##
+#################################################################################
+
+language: "de"
+## Alle Nachrichten, wenn Spieler den Server betreten oder verlassen.
+# Im MiniMessage format: https://docs.advntr.dev/minimessage/index.html.
+# Der Placeholder "{0}" ist der Spielername.
+connection:
+
+  # Gesendet, wenn ein Spieler das erste Mal spielt.
+  first-join: "<yellow>Heißt, <gold>{0}<yellow> willkommen, er ist das erste Mal gejoint!"
+
+  # Gesendet, wenn ein Spieler beitritt.
+  join: "<yellow>Guten Tag, <gold>{0}<yellow>!"
+
+  # Gesendet, wenn ein Spieler verlässt. Im MiniMessage format. {0} ist der Spielername.
+  quit: "<yellow>Bis bald, <gold>{0}<yellow>!"
+
+## Allgemeine Einstellungen.
+basic:
+
+  # Steht vor jeder Befehlsnachricht.
+  server-name: "LoudCraft"
+
+  # Custom /help Befehl vom Plugin an/aus
+  customhelp: true
+
+  # Starterkit an/aus.
+  starterkit: true
+
+  # Aktualisierungsintervall der Chests in Ticks.
+  hologram-refresh-interval: 20
+
+## Einstellungen für das Homesystem.
+home:
+  default-max-homes: 5
+  max-homes:
+    admin: 100
+    moderator: 50
+    supporter: 25
+    vipplus: 20
+    vip: 15
+    legend: 10
+
+
+## Einstellungen für das Verwarnungssystem.
+warning:
+
+  # Dauer des temporären Bans in Minuten. Standard: 1440 (24 Stunden)
+  tempban-duration: 1440
+
+## Einstellungen für das Teleportsystem (TPA, Warp, Spawn).
+teleport:
+  safe-enabled: true # Safe Teleport und delay ein/aus
+  delay: 5   # Sekunden
+  # Cooldown für den /back-Befehl in Sekunden (12 Stunden = 43200 Sekunden)
+  backCooldown: 43200
+
+## Einstellungen für den Deathlog
+deathlog:
+  global: false         # true = alle Tode werden gespeichert, false = nur Tode aus einer bestimmten Welt
+  world: "world"        # nur Tode aus dieser Welt werden gespeichert, falls global false ist
+  maxEntriesPerPlayer: 3  # maximale Anzahl Tode, die pro Spieler gespeichert werden sollen (für Abfrage)
+
