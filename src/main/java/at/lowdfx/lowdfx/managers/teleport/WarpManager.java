@@ -4,14 +4,14 @@ package at.lowdfx.lowdfx.managers.teleport;
 import at.lowdfx.lowdfx.LowdFX;
 import at.lowdfx.lowdfx.util.SimpleLocation;
 import com.google.gson.reflect.TypeToken;
-import com.marcpg.libpg.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
 import org.bukkit.Location;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class WarpManager {
-    public static final Map<String, SimpleLocation> WARPS = new HashMap<>();
+    public static final Map<String, SimpleLocation> WARPS = new ConcurrentHashMap<>();
 
     public static void save() {
         JsonUtils.saveSafe(WARPS, LowdFX.DATA_DIR.resolve("warps.json").toFile());

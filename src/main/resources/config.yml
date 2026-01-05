@@ -68,3 +68,19 @@ deathlog:
   world: "world"        # nur Tode aus dieser Welt werden gespeichert, falls global false ist
   maxEntriesPerPlayer: 3  # maximale Anzahl Tode, die pro Spieler gespeichert werden sollen (für Abfrage)
 
+## Einstellungen für das Wirtschaftssystem (ChestShop & Auktionshaus)
+economy:
+  # "diamonds" = Diamanten als Währung, "vault" = Vault Economy Plugin (z.B. EssentialsX)
+  currency: "diamonds"
+  # Name der Währung (nur bei Diamanten-Modus)
+  currency-name: "Diamanten"
+  currency-name-singular: "Diamant"
+
+## Einstellungen für das Auktionshaus (/ah)
+auction:
+  enabled: true
+  max-auctions-per-player: 5  # Maximale Anzahl aktiver Auktionen pro Spieler
+  default-duration: 86400      # Dauer einer Auktion in Sekunden (24 Stunden)
+  min-price: 1                 # Minimaler Preis
+  max-price: 1000000           # Maximaler Preis
+

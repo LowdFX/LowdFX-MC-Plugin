@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import at.lowdfx.lowdfx.LowdFX;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -273,7 +274,7 @@ public class DeathMessageManager {
         try (FileWriter writer = new FileWriter(file)) {
             gson.toJson(deathMessages, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+            LowdFX.LOG.error("Fehler beim Speichern der Todesnachrichten", e);
         }
     }
 
@@ -282,7 +283,7 @@ public class DeathMessageManager {
             Type type = new TypeToken<Map<String, List<String>>>() {}.getType();
             deathMessages = gson.fromJson(reader, type);
         } catch (IOException e) {
-            e.printStackTrace();
+            LowdFX.LOG.error("Fehler beim Laden der Todesnachrichten", e);
         }
     }
 

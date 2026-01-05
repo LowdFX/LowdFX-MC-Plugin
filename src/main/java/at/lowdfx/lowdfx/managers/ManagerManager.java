@@ -14,7 +14,7 @@ public final class ManagerManager {
     public static final List<Class<?>> CLASSES = List.of(
             ChestShopManager.class, HomeManager.class, LockableManager.class, PlaytimeManager.class,
             SpawnManager.class, TeleportManager.class, VanishManager.class, WarnManager.class, WarpManager.class,
-            MuteManager.class, KitManager.class);
+            MuteManager.class, KitManager.class, AuctionManager.class);
 
     public static void load() {
         for (Class<?> manager : CLASSES) {

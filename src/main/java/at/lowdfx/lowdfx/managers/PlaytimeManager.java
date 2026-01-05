@@ -3,12 +3,13 @@ package at.lowdfx.lowdfx.managers;
 import at.lowdfx.lowdfx.LowdFX;
 import at.lowdfx.lowdfx.util.Utilities;
 import com.google.gson.reflect.TypeToken;
-import com.marcpg.libpg.data.time.Time;
-import com.marcpg.libpg.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.Time;
+import at.lowdfx.lowdfx.util.TimeUnit;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class PlaytimeManager {
     public static class PlaytimeInfo {
@@ -46,7 +47,7 @@ public final class PlaytimeManager {
         }
     }
 
-    public static final Map<UUID, PlaytimeInfo> PLAYTIMES = new HashMap<>();
+    public static final Map<UUID, PlaytimeInfo> PLAYTIMES = new ConcurrentHashMap<>();
 
     public static void save() {
         JsonUtils.saveSafe(PLAYTIMES, LowdFX.DATA_DIR.resolve("playtime.json").toFile());

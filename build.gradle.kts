@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "at.lowdfx"
-version = "1.1.0"
+version = "1.9.0"
 
 java.sourceCompatibility = JavaVersion.VERSION_21
 java.targetCompatibility = JavaVersion.VERSION_21
@@ -16,7 +16,7 @@ repositories {
 
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.xenondevs.xyz/releases/")
-    maven("https://marcpg.com/repo/")
+    maven("https://jitpack.io")
     maven { url = uri("https://repo.codemc.io/repository/maven-releases/") }
     maven { url = uri("https://repo.codemc.io/repository/maven-snapshots/") }
     maven {
@@ -26,13 +26,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
-    compileOnly("xyz.xenondevs.invui:invui:1.43")
-    implementation("com.marcpg:libpg-paper:1.0.1")
-    implementation("com.marcpg:libpg-storage-json:1.0.1")
-    implementation("com.marcpg:libpg-storage-yaml:1.0.1")
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("xyz.xenondevs.invui:invui:1.49")
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") // Vault Economy API
     implementation("de.tr7zw:item-nbt-api:2.14.1")
-    implementation(files("lib/craftbukkit-1.21.4-R0.1-SNAPSHOT-remapped-mojang.jar"))
 }
 
 tasks {

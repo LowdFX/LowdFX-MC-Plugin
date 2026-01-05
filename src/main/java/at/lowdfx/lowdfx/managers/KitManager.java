@@ -6,8 +6,8 @@ import at.lowdfx.lowdfx.kit.op.*;
 import at.lowdfx.lowdfx.kit.starter.*;
 import com.google.common.collect.Lists;
 import com.google.gson.reflect.TypeToken;
-import com.marcpg.libpg.storage.JsonUtils;
-import com.marcpg.libpg.util.ItemBuilder;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -24,6 +24,7 @@ import xyz.xenondevs.invui.inventory.VirtualInventory;
 import xyz.xenondevs.invui.window.Window;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class KitManager {
     public static final NamespacedKey KEY = new NamespacedKey("lowdfx", "kit-preview");
@@ -32,7 +33,7 @@ public final class KitManager {
     public static final List<Component> OP_LORE = List.of(Component.text("OP Kit", NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
     public static final List<Component> STARTER_LORE = List.of(Component.text("Starter Kit", NamedTextColor.DARK_PURPLE).decoration(TextDecoration.ITALIC, false));
 
-    public static final Map<UUID, Kit> KITS = new HashMap<>();
+    public static final Map<UUID, Kit> KITS = new ConcurrentHashMap<>();
 
     public static void add(UUID player) {
         if (KITS.containsKey(player)) return;

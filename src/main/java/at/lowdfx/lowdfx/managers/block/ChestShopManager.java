@@ -2,14 +2,16 @@ package at.lowdfx.lowdfx.managers.block;
 
 import at.lowdfx.lowdfx.LowdFX;
 import at.lowdfx.lowdfx.managers.HologramManager;
+import at.lowdfx.lowdfx.util.EconomyHandler;
 import at.lowdfx.lowdfx.util.Perms;
 import at.lowdfx.lowdfx.util.SimpleLocation;
 import at.lowdfx.lowdfx.util.Utilities;
 import com.google.gson.reflect.TypeToken;
-import com.marcpg.libpg.exception.MessagedException;
-import com.marcpg.libpg.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.MessagedException;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ChestShopManager {
@@ -75,10 +78,10 @@ public final class ChestShopManager {
         }
 
         /**
-         * <strong>Please keep in mind that this does not validate anything and does not remove the item from the
-         * chest!</strong>
+         * Führt eine Transaktion durch.
          *
-         * @param player The player to transact to.
+         * @param shopBlock Der Container des Shops
+         * @param player Der kaufende Spieler
          */
         public void transaction(@NotNull Container shopBlock, @NotNull Player player) throws MessagedException {
             ItemStack item = ItemStack.deserializeBytes(serializedItem);
@@ -86,18 +89,32 @@ public final class ChestShopManager {
             Inventory shopInv = shopBlock.getInventory();
             Inventory playerInv = player.getInventory();
 
-            ItemStack payment = new ItemStack(Material.DIAMOND, price.get());
-
             if (!shopInv.containsAtLeast(item, item.getAmount()))
                 throw new MessagedException("Der Shop ist ausverkauft!");
-            if (!playerInv.containsAtLeast(payment, price.get()))
-                throw new MessagedException("Du hast nicht genug Diamanten, um das zu kaufen.");
 
+            int priceAmount = price.get();
+
+            // Prüfe ob Käufer genug Geld/Diamanten hat
+            if (!EconomyHandler.hasEnough(player, priceAmount))
+                throw new MessagedException("Du hast nicht genug " + EconomyHandler.getCurrencyName(priceAmount) + ", um das zu kaufen.");
+
+            // Transaktion durchführen
+            EconomyHandler.withdraw(player, priceAmount);
+
+            // Verkäufer bekommt Geld (falls online) oder Diamanten in die Kiste
+            Player ownerPlayer = Bukkit.getPlayer(owner);
+            if (EconomyHandler.isUsingVault() && ownerPlayer != null) {
+                // Bei Vault: direkt auf Konto einzahlen
+                EconomyHandler.deposit(ownerPlayer, priceAmount);
+            } else {
+                // Bei Diamanten oder Offline: in die Kiste legen
+                ItemStack payment = new ItemStack(Material.DIAMOND, priceAmount);
+                shopInv.addItem(payment);
+            }
+
+            // Item an Käufer geben
             playerInv.addItem(item.clone());
             shopInv.removeItem(item.clone());
-
-            playerInv.removeItem(payment);
-            shopInv.addItem(payment);
         }
 
         public UUID owner() {
@@ -117,7 +134,7 @@ public final class ChestShopManager {
         }
     }
 
-    public static final Map<UUID, ArrayList<Shop>> SHOPS = new HashMap<>();
+    public static final Map<UUID, ArrayList<Shop>> SHOPS = new ConcurrentHashMap<>();
 
     public static void save() {
         JsonUtils.saveSafe(SHOPS, LowdFX.DATA_DIR.resolve("shops.json").toFile());
@@ -197,10 +214,11 @@ public final class ChestShopManager {
     }
 
     public static @NotNull @Unmodifiable List<Component> hologramText(@NotNull Shop shop) {
+        int priceAmount = shop.price().get();
         return List.of(
                 Component.translatable(shop.item().translationKey()).append(Component.text(" x " + shop.item().getAmount())).color(NamedTextColor.YELLOW),
                 Component.text("Stock: " + stock(shop), NamedTextColor.GREEN),
-                Component.text("Price: " + shop.price().get() + " Diamonds", NamedTextColor.AQUA)
+                Component.text("Preis: " + EconomyHandler.format(priceAmount), NamedTextColor.AQUA)
         );
     }
 }

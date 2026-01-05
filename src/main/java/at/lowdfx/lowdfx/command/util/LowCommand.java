@@ -37,10 +37,11 @@ public final class LowCommand {
                 .then(LiteralArgumentBuilder.<CommandSourceStack>literal("info")
                         .requires(source -> Perms.check(source, Perms.Perm.INFO))
                         .executes(context -> {
-                            context.getSource().getSender().sendMessage(MiniMessage.miniMessage().deserialize("""
-                            <yellow><b>MC-Version:</b> <gold>1.21.4+
-                            <yellow><b>Plugin-Version:</b> <gold>1.2.0
-                            <yellow><b>Author:</b> <gold>LowdFX"""));
+                            String version = LowdFX.PLUGIN.getPluginMeta().getVersion();
+                            context.getSource().getSender().sendMessage(MiniMessage.miniMessage().deserialize(
+                                    "<yellow><b>MC-Version:</b> <gold>1.21.4+\n" +
+                                    "<yellow><b>Plugin-Version:</b> <gold>" + version + "\n" +
+                                    "<yellow><b>Author:</b> <gold>LowdFX"));
                             return 1;
                         })
                 )

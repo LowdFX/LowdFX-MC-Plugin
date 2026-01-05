@@ -3,7 +3,7 @@ package at.lowdfx.lowdfx.managers.moderation;
 import at.lowdfx.lowdfx.LowdFX;
 import at.lowdfx.lowdfx.util.Perms;
 import com.google.gson.reflect.TypeToken;
-import com.marcpg.libpg.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

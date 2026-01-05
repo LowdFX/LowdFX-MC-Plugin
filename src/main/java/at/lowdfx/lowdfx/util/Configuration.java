@@ -7,6 +7,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +37,18 @@ public class Configuration {
     public static String DEATHLOG_WORLD;
     public static int DEATHLOG_MAX_ENTRIES;
 
+    // Economy Einstellungen
+    public static String ECONOMY_CURRENCY;
+    public static String ECONOMY_CURRENCY_NAME;
+    public static String ECONOMY_CURRENCY_SINGULAR;
+
+    // Auction Einstellungen
+    public static boolean AUCTION_ENABLED;
+    public static int AUCTION_MAX_PER_PLAYER;
+    public static long AUCTION_DEFAULT_DURATION;
+    public static int AUCTION_MIN_PRICE;
+    public static int AUCTION_MAX_PRICE;
+
 
     public static void init(@NotNull JavaPlugin plugin) {
         plugin.saveDefaultConfig();
@@ -60,9 +74,10 @@ public class Configuration {
 
         DEFAULT_MAX_HOMES = CONFIG.getInt("home.default-max-homes", 5);
         HOME_MAXHOMES.clear();
-        if (CONFIG.isConfigurationSection("home.max-homes")) {
-            for (String group : CONFIG.getConfigurationSection("home.max-homes").getKeys(false)) {
-                HOME_MAXHOMES.put(group, CONFIG.getInt("home.max-homes." + group, DEFAULT_MAX_HOMES));
+        ConfigurationSection homeSection = CONFIG.getConfigurationSection("home.max-homes");
+        if (homeSection != null) {
+            for (String group : homeSection.getKeys(false)) {
+                HOME_MAXHOMES.put(group, homeSection.getInt(group, DEFAULT_MAX_HOMES));
             }
         }
 
@@ -76,6 +91,17 @@ public class Configuration {
         DEATHLOG_WORLD = CONFIG.getString("deathlog.world", "world");
         DEATHLOG_MAX_ENTRIES = CONFIG.getInt("deathlog.maxEntriesPerPlayer", 3);
 
+        // Economy
+        ECONOMY_CURRENCY = CONFIG.getString("economy.currency", "diamonds");
+        ECONOMY_CURRENCY_NAME = CONFIG.getString("economy.currency-name", "Diamanten");
+        ECONOMY_CURRENCY_SINGULAR = CONFIG.getString("economy.currency-name-singular", "Diamant");
+
+        // Auction
+        AUCTION_ENABLED = CONFIG.getBoolean("auction.enabled", true);
+        AUCTION_MAX_PER_PLAYER = CONFIG.getInt("auction.max-auctions-per-player", 5);
+        AUCTION_DEFAULT_DURATION = CONFIG.getLong("auction.default-duration", 86400);
+        AUCTION_MIN_PRICE = CONFIG.getInt("auction.min-price", 1);
+        AUCTION_MAX_PRICE = CONFIG.getInt("auction.max-price", 1000000);
     }
 
     public static FileConfiguration get() {

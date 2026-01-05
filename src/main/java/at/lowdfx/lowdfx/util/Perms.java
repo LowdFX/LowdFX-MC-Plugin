@@ -1,7 +1,7 @@
 package at.lowdfx.lowdfx.util;
 
 import at.lowdfx.lowdfx.LowdFX;
-import com.marcpg.libpg.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permissible;
@@ -69,7 +69,8 @@ public final class Perms {
         CLEARITEMS(         "lowdfx.clear.items",       "Lösche alle Items vom Boden.",         OP),
         BIND(               "lowdfx.bind",              "Binde einen Befehl auf ein Item.",     OP),
         SUDO(               "lowdfx.sudo",              "Führe einen Befehl als anderer aus.",  OP),
-        COMMANDSIGN(        "lowdfx.commandsign",       "Erstelle ein Commandsign.",  OP);
+        COMMANDSIGN(        "lowdfx.commandsign",       "Erstelle ein Commandsign.",  OP),
+        AUCTION(            "lowdfx.auction",           "Nutze das Auktionshaus.",              TRUE);
 
         private final String permission;
         private final String commands;

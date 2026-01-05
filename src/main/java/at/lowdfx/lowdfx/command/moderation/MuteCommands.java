@@ -4,7 +4,8 @@ import at.lowdfx.lowdfx.LowdFX;
 import at.lowdfx.lowdfx.command.util.CommandHelp;
 import at.lowdfx.lowdfx.managers.moderation.MuteManager;
 import at.lowdfx.lowdfx.util.Perms;
-import com.marcpg.libpg.data.time.Time;
+import at.lowdfx.lowdfx.util.Time;
+import at.lowdfx.lowdfx.util.TimeUnit;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -111,7 +112,7 @@ public final class MuteCommands {
                 .executes(context -> {
                     // Standardwerte
                     CommandSender sender = context.getSource().getSender();
-                    Time defaultTime = new Time(1, Time.Unit.HOURS);
+                    Time defaultTime = new Time(1, TimeUnit.HOURS);
                     String defaultReason = "Event-Mute";
 
                     for (Player target : Bukkit.getOnlinePlayers()) {

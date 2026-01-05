@@ -4,19 +4,19 @@ import at.lowdfx.lowdfx.LowdFX;
 import at.lowdfx.lowdfx.util.SimpleLocation;
 import at.lowdfx.lowdfx.util.Utilities;
 import com.google.gson.reflect.TypeToken;
-import com.marcpg.libpg.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class SpawnManager {
     public static final String DEFAULT_SPAWN_NAME = "spawn";
-    public static final Map<String, SimpleLocation> SPAWNS = new HashMap<>();
+    public static final Map<String, SimpleLocation> SPAWNS = new ConcurrentHashMap<>();
 
     public static void save() {
         JsonUtils.saveSafe(SPAWNS, LowdFX.DATA_DIR.resolve("spawns.json").toFile());

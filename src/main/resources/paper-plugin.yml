@@ -2,7 +2,7 @@
 name: LowdFX
 
 ### Build Version ###
-version: '1.2.0'
+version: '1.9.0'
 
 ### Main Class ###
 main: at.lowdfx.lowdfx.LowdFX
@@ -20,3 +20,4 @@ authors:
 ### Softdepends ###
 softdepend:
   - LuckPerms
+  - Vault

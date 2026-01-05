@@ -5,8 +5,8 @@ import at.lowdfx.lowdfx.util.Configuration;
 import at.lowdfx.lowdfx.util.Perms;
 import at.lowdfx.lowdfx.util.SimpleLocation;
 import com.google.gson.reflect.TypeToken;
-import com.marcpg.libpg.storage.JsonUtils;
-import com.marcpg.libpg.storing.Pair;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.Pair;
 import io.papermc.paper.entity.TeleportFlag;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -20,18 +20,18 @@ import org.jetbrains.annotations.NotNull;
 import org.bukkit.scheduler.BukkitTask;
 import at.lowdfx.lowdfx.util.Utilities;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 public final class TeleportManager {
 
-    public static final Map<UUID, Pair<SimpleLocation, AtomicLong>> BACK_POINTS = new HashMap<>();
+    public static final Map<UUID, Pair<SimpleLocation, AtomicLong>> BACK_POINTS = new ConcurrentHashMap<>();
     // Map für bereits gestartete, verzögerte Teleport-Aufträge
-    private static final Map<UUID, BukkitTask> pendingTeleports = new HashMap<>();
-    private static final Map<UUID, SimpleLocation> lastEventPoints = new HashMap<>();
+    private static final Map<UUID, BukkitTask> pendingTeleports = new ConcurrentHashMap<>();
+    private static final Map<UUID, SimpleLocation> lastEventPoints = new ConcurrentHashMap<>();
 
     // Diese innere Klasse speichert Informationen zum pending Teleport
     public static class PendingTeleport {
@@ -51,7 +51,7 @@ public final class TeleportManager {
     }
 
     public static void save() {
-        JsonUtils.saveSafe(BACK_POINTS.entrySet(), LowdFX.DATA_DIR.resolve("back-points.json").toFile());
+        JsonUtils.saveSafe(BACK_POINTS, LowdFX.DATA_DIR.resolve("back-points.json").toFile());
     }
 
     public static void load() {

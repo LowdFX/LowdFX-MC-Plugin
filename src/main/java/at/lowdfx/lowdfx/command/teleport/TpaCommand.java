@@ -22,10 +22,12 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("UnstableApiUsage")
 public final class TpaCommand {
@@ -48,13 +50,45 @@ public final class TpaCommand {
     }
 
 
-    public static final long EXPIRATION_TIME = 120000; // 2 Minuten
+    public static final long EXPIRATION_TIME = 60000; // 1 Minute (vorher 2 Minuten)
     // Für normale /tpa-Anfragen: key = Absender, value = Ziel
-    public static final Map<UUID, UUID> REQUESTS = new HashMap<>();
+    public static final Map<UUID, UUID> REQUESTS = new ConcurrentHashMap<>();
     // Speichert, wann die Anfrage erstellt wurde
-    public static final Map<UUID, Long> CREATIONS = new HashMap<>();
+    public static final Map<UUID, Long> CREATIONS = new ConcurrentHashMap<>();
     // Speichert für den Absender, ob es sich um eine tpahere-Anfrage handelt (true = tpahere, false = normal)
-    public static final Map<UUID, Boolean> HERE_FLAGS = new HashMap<>();
+    public static final Map<UUID, Boolean> HERE_FLAGS = new ConcurrentHashMap<>();
+
+    // Startet den automatischen Cleanup-Task
+    public static void startCleanupTask() {
+        Bukkit.getScheduler().runTaskTimer(LowdFX.PLUGIN, TpaCommand::cleanupExpiredRequests, 200, 200); // Alle 10 Sekunden
+    }
+
+    // Entfernt abgelaufene Anfragen und benachrichtigt die Spieler
+    private static void cleanupExpiredRequests() {
+        List<UUID> expired = new ArrayList<>();
+        CREATIONS.forEach((uuid, time) -> {
+            if (time + EXPIRATION_TIME < System.currentTimeMillis()) {
+                expired.add(uuid);
+            }
+        });
+
+        for (UUID senderUuid : expired) {
+            UUID targetUuid = REQUESTS.get(senderUuid);
+            remove(senderUuid);
+
+            Player sender = Bukkit.getPlayer(senderUuid);
+            if (sender != null) {
+                sender.sendMessage(LowdFX.serverMessage(Component.text("Deine TPA-Anfrage ist abgelaufen!", NamedTextColor.YELLOW)));
+            }
+
+            if (targetUuid != null) {
+                Player target = Bukkit.getPlayer(targetUuid);
+                if (target != null) {
+                    target.sendMessage(LowdFX.serverMessage(Component.text("Eine TPA-Anfrage an dich ist abgelaufen.", NamedTextColor.GRAY)));
+                }
+            }
+        }
+    }
 
     public static LiteralCommandNode<CommandSourceStack> command() {
         return LiteralArgumentBuilder.<CommandSourceStack>literal("tpa")

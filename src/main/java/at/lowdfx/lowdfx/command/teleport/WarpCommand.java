@@ -44,6 +44,13 @@ public final class WarpCommand {
     public static LiteralCommandNode<CommandSourceStack> command() {
         return LiteralArgumentBuilder.<CommandSourceStack>literal("warp")
                 .requires(source -> Perms.check(source, Perms.Perm.WARP))
+                // Hilfe bei /warp ohne Argumente
+                .executes(context -> {
+                    if (context.getSource().getExecutor() instanceof Player player) {
+                        showHelp(player);
+                    }
+                    return 1;
+                })
                 // /warp <name>: Teleportiere zum angegebenen Warppunkt
                 .then(RequiredArgumentBuilder.<CommandSourceStack, String>argument("name", StringArgumentType.word())
                         .requires(source -> source.getExecutor() instanceof Player)
@@ -132,5 +139,14 @@ public final class WarpCommand {
                         )
                 )
                 .build();
+    }
+
+    private static void showHelp(Player player) {
+        player.sendMessage(LowdFX.serverMessage(Component.text("Warp Befehle:", NamedTextColor.YELLOW)));
+        player.sendMessage(Component.text("/warp <name>", NamedTextColor.GOLD).append(Component.text(" - Teleportiere zu einem Warppunkt", NamedTextColor.GRAY)));
+        if (Perms.check(player, Perms.Perm.WARP_ADMIN)) {
+            player.sendMessage(Component.text("/warp set <name>", NamedTextColor.GOLD).append(Component.text(" - Setzt einen Warppunkt", NamedTextColor.GRAY)));
+            player.sendMessage(Component.text("/warp remove <name>", NamedTextColor.GOLD).append(Component.text(" - Entfernt einen Warppunkt", NamedTextColor.GRAY)));
+        }
     }
 }

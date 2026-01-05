@@ -2,7 +2,7 @@ package at.lowdfx.lowdfx.managers;
 
 import at.lowdfx.lowdfx.LowdFX;
 import com.google.gson.reflect.TypeToken;
-import com.marcpg.libpg.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Material;
@@ -13,6 +13,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class BindManager {
     // Datenklasse für ein Binding
@@ -33,7 +34,7 @@ public final class BindManager {
     }
 
     // Map von Binding-Namen zu BindingData
-    private static final Map<String, BindingData> bindings = new HashMap<>();
+    private static final Map<String, BindingData> bindings = new ConcurrentHashMap<>();
     // Datei, in der die Bindings gespeichert werden
     private static final File bindingsFile = new File(LowdFX.DATA_DIR.toFile(), "bindings.json");
 
@@ -109,7 +110,7 @@ public final class BindManager {
         try {
             JsonUtils.saveSafe(bindings, bindingsFile);
         } catch (Exception e) {
-            e.printStackTrace();
+            LowdFX.LOG.error("Fehler beim Speichern der Bindings", e);
         }
     }
 
@@ -119,7 +120,7 @@ public final class BindManager {
             bindings.clear();
             bindings.putAll(loaded);
         } catch (Exception e) {
-            e.printStackTrace();
+            LowdFX.LOG.error("Fehler beim Laden der Bindings", e);
         }
     }
 }

@@ -19,7 +19,7 @@ public final class CooldownManager {
             try {
                 cooldownFile.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                LowdFX.LOG.error("Fehler beim Erstellen der Cooldown-Datei", e);
             }
         }
         cooldownConfig = YamlConfiguration.loadConfiguration(cooldownFile);
@@ -41,7 +41,7 @@ public final class CooldownManager {
         try {
             cooldownConfig.save(cooldownFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            LowdFX.LOG.error("Fehler beim Speichern der Cooldown-Datei", e);
         }
     }
 }

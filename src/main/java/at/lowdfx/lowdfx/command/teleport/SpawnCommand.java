@@ -51,6 +51,12 @@ public final class SpawnCommand {
 
                     // Hole den globalen Spawn als SimpleLocation
                     SimpleLocation spawnLoc = SpawnManager.getSpawn(player);
+                    if (spawnLoc == null) {
+                        player.sendMessage(LowdFX.serverMessage(
+                                Component.text("Kein Spawn gesetzt! Bitte kontaktiere einen Admin.", NamedTextColor.RED)));
+                        Utilities.negativeSound(player);
+                        return 1;
+                    }
                     if (Configuration.SAFE_TELEPORT_ENABLED) {
                         TeleportManager.teleportDelayed(player, spawnLoc.asLocation());
                     } else {

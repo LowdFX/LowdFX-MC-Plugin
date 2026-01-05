@@ -3,8 +3,9 @@ package at.lowdfx.lowdfx.managers.moderation;
 import at.lowdfx.lowdfx.LowdFX;
 import at.lowdfx.lowdfx.util.Utilities;
 import com.google.gson.reflect.TypeToken;
-import com.marcpg.libpg.data.time.Time;
-import com.marcpg.libpg.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.Time;
+import at.lowdfx.lowdfx.util.TimeUnit;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -13,10 +14,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class MuteManager {
     public record Mute(UUID player, String by, String reason, Time duration, long given) {
@@ -29,8 +30,8 @@ public final class MuteManager {
         }
     }
 
-    public static final Time MAX_TIME = new Time(1, Time.Unit.YEARS);
-    public static final Map<UUID, Mute> MUTES = new HashMap<>();
+    public static final Time MAX_TIME = new Time(1, TimeUnit.YEARS);
+    public static final Map<UUID, Mute> MUTES = new ConcurrentHashMap<>();
 
     public static void save() {
         JsonUtils.saveSafe(MUTES, LowdFX.DATA_DIR.resolve("mutes.json").toFile());

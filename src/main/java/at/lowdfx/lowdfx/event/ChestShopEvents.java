@@ -4,7 +4,7 @@ import at.lowdfx.lowdfx.LowdFX;
 import at.lowdfx.lowdfx.managers.block.ChestShopManager;
 import at.lowdfx.lowdfx.util.Perms;
 import at.lowdfx.lowdfx.util.Utilities;
-import com.marcpg.libpg.exception.MessagedException;
+import at.lowdfx.lowdfx.util.MessagedException;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.block.Block;

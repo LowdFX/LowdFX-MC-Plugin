@@ -4,6 +4,7 @@ import at.lowdfx.lowdfx.LowdFX;
 import at.lowdfx.lowdfx.command.util.CommandHelp;
 import at.lowdfx.lowdfx.managers.HologramManager;
 import at.lowdfx.lowdfx.managers.block.ChestShopManager;
+import at.lowdfx.lowdfx.util.EconomyHandler;
 import at.lowdfx.lowdfx.util.Perms;
 import at.lowdfx.lowdfx.util.Utilities;
 import com.destroystokyo.paper.profile.PlayerProfile;
@@ -51,6 +52,13 @@ public final class ChestShopCommand {
     public static LiteralCommandNode<CommandSourceStack> command() {
         return LiteralArgumentBuilder.<CommandSourceStack>literal("sh")
                 .requires(source -> Perms.check(source, Perms.Perm.CHEST_SHOP) && source.getExecutor() instanceof Player)
+                // Hilfe bei /sh ohne Argumente
+                .executes(context -> {
+                    if (context.getSource().getExecutor() instanceof Player player) {
+                        showHelp(player);
+                    }
+                    return 1;
+                })
                 .then(LiteralArgumentBuilder.<CommandSourceStack>literal("create")
                         .then(RequiredArgumentBuilder.<CommandSourceStack, Integer>argument("price", IntegerArgumentType.integer(1))
                                 .executes(context -> {
@@ -141,7 +149,7 @@ public final class ChestShopCommand {
                                     }
 
                                     shop.price().set(price);
-                                    player.sendMessage(LowdFX.serverMessage(Component.text("Preis vom Shop wurde zu " + price + " Diamanten gesetzt!", NamedTextColor.GREEN)));
+                                    player.sendMessage(LowdFX.serverMessage(Component.text("Preis vom Shop wurde zu " + EconomyHandler.format(price) + " gesetzt!", NamedTextColor.GREEN)));
                                     Utilities.positiveSound(player);
                                     return 1;
                                 })
@@ -297,5 +305,16 @@ public final class ChestShopCommand {
                         })
                 )
                 .build();
+    }
+
+    private static void showHelp(Player player) {
+        player.sendMessage(LowdFX.serverMessage(Component.text("Shop-Kiste Befehle:", NamedTextColor.YELLOW)));
+        player.sendMessage(Component.text("/sh create <preis>", NamedTextColor.GOLD).append(Component.text(" - Erstellt einen Shop", NamedTextColor.GRAY)));
+        player.sendMessage(Component.text("/sh remove", NamedTextColor.GOLD).append(Component.text(" - Entfernt einen Shop", NamedTextColor.GRAY)));
+        player.sendMessage(Component.text("/sh price <preis>", NamedTextColor.GOLD).append(Component.text(" - Ändert den Preis", NamedTextColor.GRAY)));
+        player.sendMessage(Component.text("/sh item", NamedTextColor.GOLD).append(Component.text(" - Ändert das Item", NamedTextColor.GRAY)));
+        player.sendMessage(Component.text("/sh whitelist add <player>", NamedTextColor.GOLD).append(Component.text(" - Fügt Spieler zur Whitelist hinzu", NamedTextColor.GRAY)));
+        player.sendMessage(Component.text("/sh whitelist remove <player>", NamedTextColor.GOLD).append(Component.text(" - Entfernt Spieler von der Whitelist", NamedTextColor.GRAY)));
+        player.sendMessage(Component.text("/sh whitelist list", NamedTextColor.GOLD).append(Component.text(" - Zeigt die Whitelist", NamedTextColor.GRAY)));
     }
 }

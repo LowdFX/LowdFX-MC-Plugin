@@ -11,6 +11,7 @@ import at.lowdfx.lowdfx.command.util.LowCommand;
 import at.lowdfx.lowdfx.command.util.TimeCommands;
 import at.lowdfx.lowdfx.command.util.UtilityCommands;
 import at.lowdfx.lowdfx.event.*;
+import at.lowdfx.lowdfx.managers.AuctionManager;
 import at.lowdfx.lowdfx.managers.DeathMessageManager;
 import at.lowdfx.lowdfx.managers.EmojiManager;
 import at.lowdfx.lowdfx.managers.HologramManager;
@@ -18,11 +19,11 @@ import at.lowdfx.lowdfx.managers.ManagerManager;
 import at.lowdfx.lowdfx.listeners.TeleportCancelOnDamageListener;
 import at.lowdfx.lowdfx.managers.teleport.CooldownManager;
 import at.lowdfx.lowdfx.util.Configuration;
+import at.lowdfx.lowdfx.util.EconomyHandler;
 import at.lowdfx.lowdfx.util.FileUpdater;
 import at.lowdfx.lowdfx.util.Perms;
 import at.lowdfx.lowdfx.util.UpdaterJoinListener;
-import com.marcpg.libpg.MinecraftLibPG;
-import com.marcpg.libpg.util.ServerUtils;
+import at.lowdfx.lowdfx.util.ServerUtils;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
@@ -64,8 +65,8 @@ public final class LowdFX extends JavaPlugin {
         DATA_DIR.toFile().mkdirs();
 
         InvUI.getInstance().setPlugin(this);
-        MinecraftLibPG.init(this);
         Configuration.init(this);
+        EconomyHandler.init();
 
         Perms.loadPermissions();
         ManagerManager.load();
@@ -75,7 +76,7 @@ public final class LowdFX extends JavaPlugin {
         DeathMessageManager deathMessageManager = new DeathMessageManager(this);
 
        // Plugin Updater
-       String updateUrl = "https://raw.githubusercontent.com/LowdFX/LowdFX-Minecraft-Server-Plugin/refs/heads/master/update.txt";
+       String updateUrl = "https://raw.githubusercontent.com/LowdFX/LowdFX-Minecraft-Server-Plugin/main/update.txt";
        String downloadLink = "https://www.spigotmc.org/resources/lowdfx.123832/";
        getServer().getPluginManager().registerEvents(new UpdaterJoinListener(this, updateUrl, downloadLink), this);
 
@@ -139,13 +140,20 @@ public final class LowdFX extends JavaPlugin {
             registrar.register(ClearEntitysCommand.command(), "Lösche Entitys. (Monster/Items)");
             registrar.register(BindCommand.command(), "Binde einen Befehl auf ein Item.");
             registrar.register(SudoCommand.command(), "Führe einen Befehl als anderer Spieler aus.");
+            registrar.register(AuctionCommand.command(), "Öffne das Auktionshaus.", List.of("auction", "auktion"));
 
         });
 
+        // TPA Cleanup-Task starten
+        TpaCommand.startCleanupTask();
+
+        // Auction Cleanup-Task starten
+        AuctionManager.startCleanupTask();
+
         LOG.info("LowdFX Plugin gestartet!");
 
-        // Save all data every 3 minutes.
-        Bukkit.getScheduler().runTaskTimer(this, ManagerManager::save, 3600, 3600);
+        // Save all data every minute.
+        Bukkit.getScheduler().runTaskTimer(this, ManagerManager::save, 1200, 1200);
     }
 
     @Override

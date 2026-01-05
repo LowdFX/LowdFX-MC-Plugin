@@ -5,7 +5,7 @@ import at.lowdfx.lowdfx.util.Perms;
 import at.lowdfx.lowdfx.util.SimpleLocation;
 import at.lowdfx.lowdfx.util.Utilities;
 import com.google.gson.reflect.TypeToken;
-import com.marcpg.libpg.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class LockableManager {
     public static final class Locked {
@@ -96,7 +97,7 @@ public final class LockableManager {
         }
     }
 
-    public static final Map<UUID, ArrayList<Locked>> LOCKED = new HashMap<>();
+    public static final Map<UUID, ArrayList<Locked>> LOCKED = new ConcurrentHashMap<>();
 
     public static void save() {
         JsonUtils.saveSafe(LOCKED, LowdFX.DATA_DIR.resolve("locked.json").toFile());

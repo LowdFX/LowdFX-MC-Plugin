@@ -1,7 +1,7 @@
 package at.lowdfx.lowdfx.kit;
 
 import at.lowdfx.lowdfx.LowdFX;
-import com.marcpg.libpg.util.ItemBuilder;
+import at.lowdfx.lowdfx.util.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

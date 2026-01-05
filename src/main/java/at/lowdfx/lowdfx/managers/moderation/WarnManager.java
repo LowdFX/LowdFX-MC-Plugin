@@ -4,8 +4,9 @@ import at.lowdfx.lowdfx.LowdFX;
 import at.lowdfx.lowdfx.util.Configuration;
 import at.lowdfx.lowdfx.util.Utilities;
 import com.google.gson.reflect.TypeToken;
-import com.marcpg.libpg.data.time.Time;
-import com.marcpg.libpg.storage.JsonUtils;
+import at.lowdfx.lowdfx.util.Time;
+import at.lowdfx.lowdfx.util.TimeUnit;
+import at.lowdfx.lowdfx.util.storage.JsonUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,11 +19,12 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class WarnManager {
     public record Warn(UUID warned, String warner, String reason, long given) {}
 
-    public static final Map<UUID, ArrayList<Warn>> WARNS = new HashMap<>();
+    public static final Map<UUID, ArrayList<Warn>> WARNS = new ConcurrentHashMap<>();
 
     public static void save() {
         WARNS.keySet().forEach(WarnManager::update);

@@ -1,7 +1,7 @@
 package at.lowdfx.lowdfx.kit.op;
 
 import at.lowdfx.lowdfx.managers.KitManager;
-import com.marcpg.libpg.util.ItemBuilder;
+import at.lowdfx.lowdfx.util.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;

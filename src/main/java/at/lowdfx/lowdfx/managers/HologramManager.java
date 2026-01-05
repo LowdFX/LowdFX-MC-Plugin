@@ -13,15 +13,15 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class HologramManager {
     public static final NamespacedKey KEY = new NamespacedKey("lowdfx", "hologram");
 
-    private static final Map<Location, List<ArmorStand>> HOLOGRAMS = new HashMap<>();
+    private static final Map<Location, List<ArmorStand>> HOLOGRAMS = new ConcurrentHashMap<>();
 
     public static void load() {
         Bukkit.getScheduler().runTaskTimer(LowdFX.PLUGIN, HologramManager::fixAll, 5, Configuration.BASIC_HOLOGRAM_REFRESH_INTERVAL * 20);
