@@ -112,7 +112,7 @@ Gib einfach `/lowdfx:` in den Chat ein, um eine vollständige Liste aller Befehl
 ## Entwickler & Lizenz
 
 Das Plugin wird kontinuierlich weiterentwickelt – Beiträge und Feedback sind herzlich willkommen!
-Dieses Projekt steht unter der MIT-Lizenz.
+Dieses Projekt steht unter der GPL 3 Lizenz.
 © 2025 LowdFX. Alle Rechte vorbehalten.
 
 ---
