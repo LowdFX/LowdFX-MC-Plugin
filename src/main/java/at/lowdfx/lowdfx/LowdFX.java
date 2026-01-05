@@ -76,7 +76,7 @@ public final class LowdFX extends JavaPlugin {
         DeathMessageManager deathMessageManager = new DeathMessageManager(this);
 
        // Plugin Updater
-       String updateUrl = "https://raw.githubusercontent.com/LowdFX/LowdFX-Minecraft-Server-Plugin/main/update.txt";
+       String updateUrl = "https://raw.githubusercontent.com/LowdFX/LowdFX-MC-Plugin/main/update.txt";
        String downloadLink = "https://www.spigotmc.org/resources/lowdfx.123832/";
        getServer().getPluginManager().registerEvents(new UpdaterJoinListener(this, updateUrl, downloadLink), this);
 
