@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="logo.png" alt="LowdFX Logo" width="200"/>
+  <img src="logo.png" alt="LowdFX Logo" width="400"/>
 </p>
 
 # LowdFX Minecraft Plugin
 
 **Version**: `1.9.0`
-**Paper API-Version**: `>=1.21`
+**Paper API-Version**: `>=1.21.2`
 
 ## Beschreibung
 
